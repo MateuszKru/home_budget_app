@@ -1,6 +1,7 @@
 
 import { useState } from "react";
-import sendRequest from "../services/APIService";
+import SendRequest from "../services/APIService";
+import useNavigateService from '../services/useNavigateService'
 
 interface IBudget {
     bugdetMonth: string
@@ -11,18 +12,24 @@ interface IBudget {
     retirementInvestments: number,
     savings: number,
 }
+type removeTokenFunc = {
+    removeToken: any
+}
 
-const Budget = () => {
+const Budget = (removeToken: removeTokenFunc) => {
     const [budgetList, setBudgetList] = useState<Array<IBudget>>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<any>(null);
+    const { goTo } = useNavigateService();
+
 
     const getBudgetList = async () => {
         setIsLoading(true);
         setError(null);
+        setBudgetList([]);
         try {
-            const result = await sendRequest({ url: "Budget/GetAllBudgetsList", method: "GET" });
-            const list = result as Array<IBudget>;
+            const result = await SendRequest({ url: "Budget/GetAllBudgetsList", method: "GET" });
+            const list = await result.json() as Array<IBudget>;
             setBudgetList(list);
         }
         catch (error) {
@@ -33,14 +40,23 @@ const Budget = () => {
         }
     };
 
+    function Logout() {
+        removeToken.removeToken();
+        goTo('/login');
+    };
+
     return (
         <>
-            <button onClick={getBudgetList}>Get data</button>
+            <button onClick={getBudgetList}>Pobierz dane</button>
             <div>
                 {isLoading ? (
                     <p>Ładowanie...</p>
                 ) : error ? (
-                    <p>Wystąpił błąd: {error.toString()}</p>
+                    <div>
+                        <p>Wystąpił błąd: {error.toString()}</p>
+                        <button onClick={() => setError(null)}>Spróbuj ponownie</button>
+                    </div>
+
                 ) : budgetList ? (
                     budgetList?.map((x) =>
                         <>
@@ -57,8 +73,9 @@ const Budget = () => {
                     )
                 ) : null}
             </div>
+            <button onClick={Logout}>Wyloguj</button>
         </>
     )
-}
+};
 
 export default Budget;

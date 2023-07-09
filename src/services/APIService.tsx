@@ -9,23 +9,28 @@ export interface APIResponse {
     isLoading: boolean,
     error: any
 };
+const getToken = () => {
+    const tokenString = localStorage.getItem('token');
+    if (tokenString) {
+        const userToken = JSON.parse(tokenString);
+        return userToken;
+    };
+};
 
 const sendRequest = async (request: APIRequest) => {
     const requestUrl = `${process.env.REACT_APP_HOME_BUDGET_API_URL}${request.url}`;
+    const token = getToken();
     const requestOptions = {
         method: request.method,
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': token ? 'Bearer ' + token : "",
         },
         body: JSON.stringify(request.body),
     };
 
     const response = await fetch(requestUrl, requestOptions);
-    if (response.ok) {
-        const data: any = await response.json();
-        return data;
-    } else {
-        throw new Error('Request failed');
-    }
+    return response;
+    
 };
 export default sendRequest;

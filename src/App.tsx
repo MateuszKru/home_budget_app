@@ -1,13 +1,35 @@
 import './App.css';
-import Budget  from './views/Budget';
+import Login from './views/Login';
+import Register from './views/Register';
+import Budget from './views/Budget';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import useToken from './services/useToken';
 
 function App() {
+
+  const { token, setToken, removeToken} = useToken();
+
+  if (!token) {
+    return (
+      <BrowserRouter>
+        <Routes>
+          <Route path="*" element={<Login setToken={setToken} />} /> 
+          <Route path="/login" element={<Login setToken={setToken} />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </BrowserRouter>
+    )
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <Budget />
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="*" element={<Budget removeToken={removeToken}/>} />
+        <Route path="/Budget" element={<Budget removeToken={removeToken}/>} />
+        <Route path="/login" element={<Login setToken={setToken} />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
