@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import SendRequest from '../services/APIService'
 import useNavigateService from '../services/useNavigateService'
-import FormLabel from '../components/formLabel';
-import FormInputError from '../components/formInputError';
+import Loader from '../components/Loader';
+import FormLabel from '../components/formComponents/formLabel';
+import FormButton from '../components/formComponents/formButton';
+import FormContainer from '../components/formComponents/formContainer';
+import FormButtonContainer from '../components/formComponents/formButtonContainer';
 
 type User = {
     email: string;
@@ -60,40 +63,42 @@ const Login = (setToken: setTokenFunc) => {
         finally {
             setIsLoading(false);
         }
-
     }
 
     if (isLoading) {
-        return <div>Ładowanie...</div>;
+        return <Loader title='Logowanie...'/>;
     }
 
     return (
         <>
-            <div>
-                <h1>Logowanie</h1>
-                <form onSubmit={handleSubmit}>
-                    <FormLabel
-                        name="Email"
-                        type="text"
-                        onChange={(e: any) => setUserEmail(e.target.value)}
+            <h1>Logowanie</h1>
+            <FormContainer onSubmit={handleSubmit}>
+                <FormLabel
+                    name="Email:"
+                    type="text"
+                    onChange={(e: any) => setUserEmail(e.target.value)}
+                    errorsMessage={(error && error['Email']) ? error['Email'] : ""}
+                />
+                <FormLabel
+                    name="Hasło:"
+                    type="password"
+                    onChange={(e: any) => setPassword(e.target.value)}
+                    errorsMessage={((error && error['Password']) ? error['Password'] : "") + " " + ((error && error['Credentials']) ? error['Credentials'] : "")}
+                />
+                <FormButtonContainer>
+                    <FormButton
+                        title='Zaloguj'
+                        type='submit'
                     />
-                    {error && <FormInputError error={error['Email']} />}
-                    <FormLabel
-                        name="Hasło"
-                        type="password"
-                        onChange={(e: any) => setPassword(e.target.value)}
+                    <span>lub</span>
+                    <FormButton
+                        title='Przejdź do rejestracji'
+                        type='button'
+                        onClick={() => goTo('/register')}
                     />
-                    {error && <FormInputError error={error['Password']} />}
-                    {error && <FormInputError error={error['Credentials']} />}
-                    <div>
-                        <button type="submit">Zaloguj</button>
-                    </div>
-                </form>
-                <button onClick={() => goTo('/register')}>Przejdź do rejestracji</button>
-            </div>
+                </FormButtonContainer>
+            </FormContainer>
         </>
-
     );
-
 };
 export default Login;

@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import sendRequest from '../services/APIService'
 import useNavigateService from '../services/useNavigateService'
-import FormLabel from '../components/formLabel'
-import FormInputError from '../components/formInputError';
+import FormLabel from '../components/formComponents/formLabel'
+import FormContainer from '../components/formComponents/formContainer';
+import FormButtonContainer from '../components/formComponents/formButtonContainer';
+import FormButton from '../components/formComponents/formButton';
+import Loader from '../components/Loader';
 
 type newUser = {
     firstName: string,
@@ -63,52 +66,51 @@ const Register = () => {
     }
 
     if (isLoading) {
-        return <div>Ładowanie...</div>;
+        return <Loader title='Rejestracja...'/>;
     }
 
     return (
         <>
-            <div>
-                <h1>Rejestracja</h1>
-                <form onSubmit={handleSubmit}>
-                    <FormLabel
-                        name="Imię"
-                        type="text"
-                        onChange={(e: any) => setFirstName(e.target.value)}
-                    />
-                    {error && <FormInputError error={error['NewUser.FirstName']} />}
-                    <FormLabel
-                        name="Nazwisko"
-                        type="text"
-                        onChange={(e: any) => setLastName(e.target.value)}
-                    />
-                    {error && <FormInputError error={error['NewUser.LastName']} />}
-                    <FormLabel
-                        name="Email"
-                        type="text"
-                        onChange={(e: any) => setUserEmail(e.target.value)}
-                    />
-                    {error && <FormInputError error={error['NewUser.Email']} />}
-                    <FormLabel
-                        name="Hasło"
-                        type="password"
-                        onChange={(e: any) => setPassword(e.target.value)}
-                    />
-                    {error && <FormInputError error={error['NewUser.Password']} />}
-                    <FormLabel
-                        name="Powtóz hasło"
-                        type="password"
-                        onChange={(e: any) => setConfirmPassword(e.target.value)}
-                    />
-                    {error && <FormInputError error={error['NewUser.ConfirmPassword']} />}
-                    <div>
-                        <button type="submit">Zarejestruj</button>
-                    </div>
-                </form>
-                <button onClick={() => goTo('/login')}>Przejdź do logowania</button>
-            </div>
-        </>
+            <h1>Rejestracja</h1>
+            <FormContainer onSubmit={handleSubmit}>
+                <FormLabel
+                    name="Imię:"
+                    type="text"
+                    onChange={(e: any) => setFirstName(e.target.value)}
+                    errorsMessage={(error && error['NewUser.FirstName']) ? error['NewUser.FirstName'] : ""}
+                />
+                <FormLabel
+                    name="Nazwisko:"
+                    type="text"
+                    onChange={(e: any) => setLastName(e.target.value)}
+                    errorsMessage={(error && error['NewUser.LastName']) ? error['NewUser.LastName'] : ""}
+                />
+                <FormLabel
+                    name="Email:"
+                    type="text"
+                    onChange={(e: any) => setUserEmail(e.target.value)}
+                    errorsMessage={(error && error['NewUser.Email']) ? error['NewUser.Email'] : ""}
+                />
+                <FormLabel
+                    name="Hasło:"
+                    type="password"
+                    onChange={(e: any) => setPassword(e.target.value)}
+                    errorsMessage={(error && error['NewUser.Password']) ? error['NewUser.Password'] : ""}
+                />
+                <FormLabel
+                    name="Powtóz hasło:"
+                    type="password"
+                    onChange={(e: any) => setConfirmPassword(e.target.value)}
+                    errorsMessage={(error && error['NewUser.ConfirmPassword']) ? error['NewUser.ConfirmPassword'] : ""}
+                />
+                <FormButtonContainer>
+                    <FormButton title='Zarejestruj' type='submit' />
+                    <span>lub</span>
+                    <FormButton title='Przejdź do logowania' type='button' onClick={() => goTo('/login')} />
+                </FormButtonContainer>
+            </FormContainer>
 
+        </>
     );
 
 };
