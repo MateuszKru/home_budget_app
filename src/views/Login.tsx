@@ -48,7 +48,7 @@ const Login = (setToken: setTokenFunc) => {
                 setAppUser(user);
                 const token: string = user.token;
                 setToken.setToken(token);
-                goTo('/Budget');
+                goTo('/budgetList');
             }
             if (result.status === 400) {
                 const errorResult = await result.json();
@@ -66,7 +66,7 @@ const Login = (setToken: setTokenFunc) => {
     }
 
     if (isLoading) {
-        return <Loader title='Logowanie...'/>;
+        return <Loader title='Logowanie...' />;
     }
 
     return (
