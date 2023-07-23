@@ -20,7 +20,7 @@ const budgetListComponent = ({ budgetListProp }: budgetListComponentProps) => {
                     }}
                 >
                     <div className="ms-2 me-auto container-md fs-6">
-                        <div className="fw-medium text-capitalize fs-4">
+                        <div className="fw-medium text-capitalize fs-5">
                             {new Date(x.budgetScope).toLocaleDateString("pl-PL", { month: 'long', year: 'numeric' })}r.
                         </div>
                         {x.fullAmount.toFixed(2)}zł

@@ -22,6 +22,8 @@ const FormLabel = ({ name, type, onChange, errorsMessage }: labelProps) => {
                 <div className="col-auto">
                     <input
                         type={type}
+                        step={0.01}
+                        min={0.01}
                         onChange={onChange}
                         className="form-control"
                         aria-labelledby="passwordHelpInline"

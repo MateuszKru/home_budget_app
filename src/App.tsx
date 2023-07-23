@@ -4,6 +4,7 @@ import Register from './views/Register';
 import BudgetList from './views/Budgets/BudgetList';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import useToken from './services/useToken';
+import AddNewBudget from './views/Budgets/AddNewBudget';
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
           <Route path="/login" element={<Login setToken={setToken} />} />
           <Route path="/register" element={<Register />} />
           <Route path="/budgetList" element={<BudgetList removeToken={removeToken} />} />
+          <Route path="/addNewBudget" element={<AddNewBudget/>} />
         </Routes>
       </BrowserRouter>
   );

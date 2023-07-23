@@ -65,14 +65,9 @@ const BudgetList = (removeToken: removeTokenFunc) => {
             )
                 : null}
             <div>
-                <button type="button" className="btn btn-success btn-lg">Utwórz nowy budżet</button>
+                <button type="button" className="btn btn-success btn-lg" onClick={() => goTo("/addNewBudget")}>Utwórz nowy budżet</button>
             </div>
-            <div
-                style={{
-                    marginTop: '10%',
-                    marginBottom: '1%'
-                }}
-            >
+            <div>
                 <button type="button" className="btn btn-warning" onClick={Logout}>Wyloguj</button>
             </div>
         </>
